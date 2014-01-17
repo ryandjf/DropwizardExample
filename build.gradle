@@ -1,0 +1,15 @@
+apply plugin: 'java'
+apply plugin: 'idea'
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    compile(
+            'com.yammer.dropwizard:dropwizard-core:0.6.2'
+    )
+    testCompile(
+            'junit:junit:4.11'
+    )
+}
