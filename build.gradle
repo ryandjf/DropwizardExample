@@ -1,5 +1,9 @@
 apply plugin: 'java'
+apply plugin: 'application'
 apply plugin: 'idea'
+
+
+mainClassName = "com.example.helloworld.HelloWorldService"
 
 repositories {
     mavenCentral()
@@ -12,4 +16,29 @@ dependencies {
     testCompile(
             'junit:junit:4.11'
     )
+}
+
+// Configure the run task to start the Dropwizard service
+run {
+    args 'server', './src/main/resources/hello-world.yml'
+
+}
+
+// Create the executable jar and exclude some certificates
+jar {
+
+    manifest {
+        attributes "Implementation-Title": "DropWizard Quickstart"
+        attributes "Main-Class": mainClassName
+    }
+
+    // remove the security files (from mail.jar / activation.jar) so that the jar will be executable.
+    doFirst {
+        from(configurations.runtime.resolve().collect { it.isDirectory() ? it : zipTree(it) }) {
+            exclude 'META-INF/MANIFEST.MF'
+            exclude 'META-INF/*.SF'
+            exclude 'META-INF/*.DSA'
+            exclude 'META-INF/*.RSA'
+        }
+    }
 }
